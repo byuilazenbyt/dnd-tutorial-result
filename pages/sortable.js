@@ -3,12 +3,10 @@ import { Container } from 'react-bootstrap'
 import Column from '../Components/sortable/Column'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import styled from 'styled-components'
+import styles from '../styles/sortable.module.css'
 
-const ColumnContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`;
+const ColumnContainer = styled.div``;
+ColumnContainer.defaultProps = {className: styles.columnContainer};
 
 export default class Sortable extends React.Component {
   constructor (props) {
@@ -23,12 +21,12 @@ export default class Sortable extends React.Component {
       columns: {
         'column-1': {
           id: 'column-1',
-          title: 'To do',
+          title: 'CSV Fields',
           taskIds: ['task-1', 'task-2', 'task-3', 'task-4'],
         },
         'column-2': {
           id: 'column-2',
-          title: 'In progress',
+          title: 'First name',
           taskIds: [],
         },
       },
@@ -72,8 +70,7 @@ export default class Sortable extends React.Component {
       this.setState(newState);
       return;
     }
-
-    if (Array.from(finish.taskIds).length >= 1) {
+    if (Array.from(finish.taskIds).length >= 1 && finish.id === 'column-2') {
       console.warn('Cannot add more than 1 task to this column');
       return;
     }
@@ -103,7 +100,7 @@ export default class Sortable extends React.Component {
   }
 
   render = () => (
-    <Container className={'p-3'}>
+    <Container className={this.props.isDragging ? styles.background : styles.notBackground}>
       <DragDropContext
         onDragEnd={this.onDragEnd}
       >
